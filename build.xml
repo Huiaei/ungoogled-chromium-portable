@@ -27,7 +27,7 @@
       </then>
       <else>
         <move todir="${extract.path}">
-          <fileset dir="${extract.path}\ungoogled-chromium-${app.version}-1_Win64" defaultexcludes="no"/>
+          <fileset dir="${extract.path}\ungoogled-chromium-${app.version}-1.1_windows_x64" defaultexcludes="no"/>
         </move>
       </else>
     </if>
