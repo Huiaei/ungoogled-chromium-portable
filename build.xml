@@ -22,9 +22,9 @@
          so the build works regardless of how upstream renames the folder
          (e.g. ungoogled-chromium-154.0.8037.57-1_Win64 vs
          ungoogled-chromium_154.0.8037.57-1.1_windows_x64). -->
-    <basename property="extract.dir.name" file="${atf.win64.assertextract}"/>
+    <dirname property="extract.dir.name" file="${atf.win64.assertextract}"/>
     <echo message="Extracted archive resolves to: ${extract.dir.name}"/>
-    <fail if="extract.dir.name" message="Failed to determine extracted archive directory from ${atf.win64.assertextract}">
+    <fail message="Failed to determine extracted archive directory from ${atf.win64.assertextract} (${extract.dir.name})">
       <condition>
         <equals arg1="${extract.dir.name}" arg2="${atf.win64.assertextract}"/>
       </condition>
