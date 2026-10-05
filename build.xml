@@ -18,16 +18,25 @@
 
   <target name="prepare">
     <echo message="Preparing release..."/>
+    <!-- Derive the extracted archive directory name from assertextract,
+         so the build works regardless of how upstream renames the folder
+         (e.g. ungoogled-chromium-154.0.8037.57-1_Win64 vs
+         ungoogled-chromium_154.0.8037.57-1.1_windows_x64). -->
+    <basename property="extract.dir.name" file="${atf.win64.assertextract}"/>
+    <echo message="Extracted archive resolves to: ${extract.dir.name}"/>
+    <fail if="extract.dir.name" message="Failed to determine extracted archive directory from ${atf.win64.assertextract}">
+      <condition>
+        <equals arg1="${extract.dir.name}" arg2="${atf.win64.assertextract}"/>
+      </condition>
+    </fail>
     <if>
       <equals arg1="${atf.arch}" arg2="win32"/>
       <then>
-        <move todir="${extract.path}">
-          <fileset dir="${extract.path}\Ungoogled-Chromium-${app.version}-1.1_Win32" defaultexcludes="no"/>
-        </move>
+        <fail message="win32 branch deprecated; use assertextract-based resolution instead"/>
       </then>
       <else>
         <move todir="${extract.path}">
-          <fileset dir="${extract.path}\ungoogled-chromium-${app.version}-1.1_Win64" defaultexcludes="no"/>
+          <fileset dir="${extract.path}\${extract.dir.name}" defaultexcludes="no"/>
         </move>
       </else>
     </if>
