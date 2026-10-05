@@ -18,11 +18,17 @@
 
   <target name="prepare">
     <echo message="Preparing release..."/>
-    <!-- Derive the extracted archive directory name from assertextract,
-         so the build works regardless of how upstream renames the folder
-         (e.g. ungoogled-chromium-154.0.8037.57-1_Win64 vs
-         ungoogled-chromium_154.0.8037.57-1.1_windows_x64). -->
-    <dirname property="extract.dir.name" file="${atf.win64.assertextract}"/>
+    <!-- Extract the directory name from assertextract.
+
+         assertextract = ungoogled-chromium_154.0.8037.57-1.1_windows_x64/chrome.exe
+
+         Ant's <dirname> resolves relative paths to be absolute w.r.t. project
+         basedir, so we need a second <basename> step to obtain only the
+         directory component (ungoogled-chromium_154.0.8037.57-1.1_windows_x64).
+         This makes the build resilient to upstream renames of the archive
+         folder (e.g. from -1_Win64 to -1.1_windows_x64). -->
+    <dirname file="${atf.win64.assertextract}" property="extract.dir.absolute"/>
+    <basename file="${extract.dir.absolute}" property="extract.dir.name"/>
     <echo message="Extracted archive resolves to: ${extract.dir.name}"/>
     <fail message="Failed to determine extracted archive directory from ${atf.win64.assertextract} (${extract.dir.name})">
       <condition>
